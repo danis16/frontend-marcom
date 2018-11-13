@@ -340,9 +340,11 @@ class index extends Component {
                                                         <td>{ele.created_date}</td>
                                                         <td>{ele.created_by}</td>
                                                         <td>
+                                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modal-delete" style={{ marginRight: '5px' }}><i className="fa fa-trash"></i></button>
+                                                            <button type="button" className="btn btn-success" data-toggle="modal" data-target="#modal-create" style={{ float: 'right', marginRight: '5px' }}><i className="fa fa-edit"></i></button>
                                                             <button type="button" className="btn btn-info" onClick={() => { this.detailModalHandler(ele._id) }} data-toggle="modal" data-target="#modal-view" style={{ marginRight: '5px' }}><i className="fa fa-search"></i></button>
-                                                            <button type="button" className="btn btn-success" onClick = {() => {this.editHandler(ele._id)}} style={{marginRight : '5px'}}><i className="fa fa-edit"></i></button>
-                                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modal-delete"><i className="fa fa-trash"></i></button>
+                                                            {/* <button type="button" className="btn btn-success" onClick = {() => {this.editHandler(ele._id)}} style={{marginRight : '5px'}}><i className="fa fa-edit"></i></button> */}
+                                            
                                                         </td>
                                                     </tr>
                                                 )
