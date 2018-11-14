@@ -19,22 +19,6 @@ class CreateEmployee extends Component {
                 created_date: "",
                 updated_by: "",
                 updated_date: "",
-                // CompanyName: "",
-                // ContactName: "",
-                // ContactEmail: "",
-                // ContactTitle: "",
-                // Address: "",
-                // City: "",
-                // PostalCode: "",
-                // Country: "",
-                // Phone: "",
-                // Fax: "",
-                // IsDelete: "",
-                // CreatedDate: "",
-                // CreatedBy: "",
-                // UpdateDate: "",
-                // UpdateBy: "",
-                // Code: "",
                 m_company_id: ""
             },
             getCompanyTitleList: [],
@@ -52,16 +36,6 @@ class CreateEmployee extends Component {
     resetForm() {
         this.setState({
             formdata: {
-                // CompanyName : "",
-                // ContactName : "",
-                // ContactEmail : "",
-                // ContactTitle : "",
-                // Address : "",
-                // City : "",
-                // PostalCode : "",
-                // Country : "",
-                // Phone : "",
-                // Fax : "",
                 CompanyId: "",
                 employee_number: "",
                 first_name: "",
@@ -301,7 +275,7 @@ class CreateEmployee extends Component {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-default pull-left" data-dismiss="modal" onClick={this.resetForm}>Close</button>
-                        <button type="button" className="btn btn-primary" onClick={this.submitHandler}>Save</button>
+                        <button type="button" className="btn btn-primary"  data-dismiss="modal" onClick={this.submitHandler}>Save</button>
                     </div>
                 </form>
             </div>

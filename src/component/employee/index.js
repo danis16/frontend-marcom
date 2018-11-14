@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import CreateEmployee from './create';
+import EditEmployee from './edit';
 import DetailEmployee from './detail';
 import { AlertList } from "react-bs-notifier";
 import axios from "axios";
@@ -69,6 +70,8 @@ class index extends Component {
         this.setState({
             currentEmployee: tmp
         });
+        console.log(tmp);
+
     }
 
     editHandler(idEmployee){
@@ -131,6 +134,47 @@ class index extends Component {
         console.log(this.state.alertData.status);
         console.log(this.state.alertData.message);
     }
+
+
+
+    modalStatusEdit(status, message, code) {
+        this.getDetailEmployeeByID('id');
+        this.setState({
+            alertData : {
+                status : status,
+                message : message
+            }
+        });
+
+        if(status === 1)
+        {
+            this.setState({
+                alerts : [{
+                    key : 1,
+                    type: "success",
+                    headline: "Good Job!",
+                    message: "Process successfully with Employee Code " + code
+                }]
+            });
+        }
+        else if(status === 0)
+        {
+            this.setState({
+                alerts : [{
+                    key : 2,
+                    type: "danger",
+                    headline: "Whoa!",
+                    message: "Process failed! with Employee Code " + code
+                }]
+            });
+        }
+
+        console.log("Check Modal Status Edit");
+        console.log(this.state.alertData.status);
+        console.log(this.state.alertData.message);
+    }
+
+
 
     // async searchSupplier() {
     //     var query = [];
@@ -225,20 +269,54 @@ class index extends Component {
         }
     }
 
+
+    async getDetailEmployeeByID(id) {
+        let result = await employeeapi.GetDetailByEmployeeIDHandler(id);
+
+        if (result.status === 200) {
+            console.log('Client - Index.js Debugger : getAllEmployee');
+            console.log(result.message);
+            this.setState({
+                employee: result.message
+            });
+
+        }
+        else {
+            console.log(result.message);
+        }
+    }
+
+
+    
+    // async getDetailEmployeeByID(id) {
+    //     let result = await employee.GetDetailByEmployeeIDHandler(id);
+    //     let currEmployee = {};
+
+    //     if(result.status === 200)
+    //     {
+    //         console.log('Employee - Edit.js Debugger');
+    //         console.log(result.message);
+
+    //         result.message.map((ele) => {
+    //             currEmployee = ele;
+    //         });
+
+    //         this.setState({
+    //             formdata: currEmployee
+    //         });
+    //     }
+    //     else
+    //     {
+    //         console.log(result.message);
+    //     }
+    // }
+
+
+
     componentDidMount() {
         this.getAllEmployee();
         localStorage.removeItem('_id');
-        // axios
-        //     .get("http://localhost:8000/api/employee/")
-        //     .then(result => {
-        //         this.setState({
-        //             employee: result.employee
-        //         });
-        //         console.log(this.state.employee);
-        //     })
-        //     .catch(error => {
-        //         console.log(error);
-        //     });
+        this.getDetailEmployeeByID('id');
     }
 
     render() {
@@ -340,9 +418,10 @@ class index extends Component {
                                                         <td>{ele.created_date}</td>
                                                         <td>{ele.created_by}</td>
                                                         <td>
-                                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modal-delete" style={{ marginRight: '5px' }}><i className="fa fa-trash"></i></button>
-                                                            <button type="button" className="btn btn-success" data-toggle="modal" data-target="#modal-create" style={{ float: 'right', marginRight: '5px' }}><i className="fa fa-edit"></i></button>
+                                                            {/* <button type="button" className="btn btn-success" data-toggle="modal" data-target="#modal-create" style={{ float: 'right', marginRight: '5px' }}><i className="fa fa-edit"></i></button> */}
                                                             <button type="button" className="btn btn-info" onClick={() => { this.detailModalHandler(ele._id) }} data-toggle="modal" data-target="#modal-view" style={{ marginRight: '5px' }}><i className="fa fa-search"></i></button>
+                                                            <button type="button" className="btn btn-success" onClick={() => { this.detailModalHandler(ele._id) }} data-toggle="modal" data-target="#modal-edit" style={{ marginRight: '5px' }}><i className="fa fa-edit"></i></button>
+                                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modal-delete" style={{ marginRight: '5px' }}><i className="fa fa-trash"></i></button>
                                                             {/* <button type="button" className="btn btn-success" onClick = {() => {this.editHandler(ele._id)}} style={{marginRight : '5px'}}><i className="fa fa-edit"></i></button> */}
                                             
                                                         </td>
@@ -363,6 +442,17 @@ class index extends Component {
                             />
                     </div>
                 </div>
+
+                <div className="modal fade" id="modal-edit">
+                    <div className="modal-dialog">
+                        <EditEmployee
+                                Employee={this.state.currentEmployee}
+                                modalStatus = {this.modalStatus}
+                            />
+                    </div>
+                </div>
+
+
                 <div className="modal fade" id="modal-view">
                     <div className="modal-dialog">
                         <DetailEmployee

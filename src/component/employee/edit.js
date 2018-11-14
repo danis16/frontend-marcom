@@ -1,36 +1,111 @@
 import React, { Component } from 'react';
-import employeeapi from '../../handler/employee';
+// import AutoGen from '../../common/autoGenerateNumber';
+import employee from '../../handler/employee';
 
-class edit extends Component {
-    constructor (props){
-        super(props)
+class EditEmployee extends Component {
+    constructor(props) {
+        super(props);
 
-        this.state={
-            formdata:{
-                _id : "",
-                employee_number : "",
-                first_name : "",
-                last_name : "",
-                m_company_id : "",
-                email : "",
-                is_delete : "",
-                created_by : "",
-                created_date : "",
-                updated_by : "",
-                updated_date : "",
+        this.state = {
+            formdata: {
+                _id: "",
+                employee_number: "",
+                first_name: "",
+                last_name: "",
+                // m_company_id: "",
+                email: "",
+                is_delete: "",
+                created_by: "",
+                created_date: "",
+                updated_by: "",
+                updated_date: "",
+                m_company_id: ""
             },
-            CompanyNameList : [],
-            product : [],
+            getCompanyTitleList: [],
             errors: {}
-        };
+    };
 
-        // this.getAllProductBySupplierID = this.getAllProductBySupplierID.bind(this);
-        this.getDetailEmployeeByID = this.getDetailEmployeeByID.bind(this);
-        this.textHandler = this.textHandler.bind(this);
+        this.submitHandler = this.submitHandler.bind(this);
+        this.resetForm = this.resetForm.bind(this);
+        this.textChanged = this.textChanged.bind(this);
+        this.handleValidation = this.handleValidation.bind(this);
+        //     this.autoGenSupplier = this.autoGenSupplier.bind(this);
         this.getCompanyName = this.getCompanyName.bind(this);
+        this.getDetailEmployeeByID = this.getDetailEmployeeByID.bind(this);
     }
 
-    textHandler(e) {
+    resetForm() {
+        this.setState({
+            formdata: {
+                CompanyId: "",
+                employee_number: "",
+                first_name: "",
+                last_name: "",
+                m_company_id: "",
+                email: "",
+                is_delete: "",
+                created_by: "",
+                created_date: "",
+                updated_by: "",
+                updated_date: ""
+            },
+            errors: {}
+        });
+    }
+
+    handleValidation() {
+        let fields = this.state.formdata;
+        let errors = {};
+        let formIsValid = true;
+
+        if (typeof fields.first_name === "undefined" || fields.first_name === null || fields.first_name === "") {
+            formIsValid = false;
+            errors.first_name = "Nama Company tidak boleh kosong.";
+        }
+
+        if (typeof fields.last_name === "undefined" || fields.last_name === null || fields.last_name === "") {
+            formIsValid = false;
+            errors.last_name = "Nama Contact tidak boleh kosong.";
+        }
+        // else {
+        //     if (!fields.ContactName.match(/^[a-zA-Z\s]+$/)) {
+        //         formIsValid = false;
+        //         errors.ContactName = "Nama Contact harus berupa huruf.";
+        //     }
+        // }
+
+        if (typeof fields.ContactEmail === "undefined" || fields.ContactEmail === null || fields.ContactEmail === "") {
+        }
+        else {
+            if (!fields.ContactEmail.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/)) {
+                formIsValid = false;
+                errors.ContactEmail = "Mohon masukkan email yang valid.";
+            }
+        }
+
+        if (typeof fields.Phone === "undefined" || fields.Phone === null || fields.Phone === "") {
+        }
+        else {
+            if (!fields.Phone.match(/^[0-9() +-]+$/)) {
+                formIsValid = false;
+                errors.Phone = "Mohon masukkan nomor telepon yang valid.";
+            }
+        }
+
+        if (typeof fields.Fax === "undefined" || fields.Fax === null || fields.Fax === "") {
+        }
+        else {
+            if (!fields.Fax.match(/^[0-9() +-]+$/)) {
+                formIsValid = false;
+                errors.Fax = "Mohon masukkan nomor fax yang valid.";
+            }
+        }
+
+        this.setState({ errors: errors });
+        return formIsValid;
+    }
+
+    textChanged(e) {
         let tmp = this.state.formdata;
         tmp[e.target.name] = e.target.value;
         this.setState({
@@ -38,15 +113,21 @@ class edit extends Component {
         });
     }
 
-    // async getAllProductBySupplierID(id) {
-    //     let result = await productapi.GetAllProductBySupplierIDHandler(id);
+    // async getDetailEmployeeByID(id) {
+    //     let result = await employee.GetDetailByEmployeeIDHandler(id);
+    //     let currEmployee = {};
 
     //     if(result.status === 200)
     //     {
-    //         console.log('Product - Edit.js Debugger');
+    //         console.log('Employee - Edit.js Debugger');
     //         console.log(result.message);
+
+    //         result.message.map((ele) => {
+    //             currEmployee = ele;
+    //         });
+
     //         this.setState({
-    //             product: result.message
+    //             formdata: currEmployee
     //         });
     //     }
     //     else
@@ -56,216 +137,154 @@ class edit extends Component {
     // }
 
     async getDetailEmployeeByID(id) {
-        let result = await employeeapi.GetDetailByEmployeeIDHandler(id);
-        let currEmployee = {};
+        let result = await employee.GetDetailByEmployeeIDHandler(id);
 
-        if(result.status === 200)
-        {
-            console.log('Employee - Edit.js Debugger');
+        if (result.status === 200) {
+            console.log('edit INI getDetailEmployeeByID');
             console.log(result.message);
-
-            result.message.map((ele) => {
-                currEmployee = ele;
-            });
-
             this.setState({
-                formdata: currEmployee
+                employee: result.message
             });
+
         }
-        else
-        {
+        else {
             console.log(result.message);
         }
     }
 
-    async getCompanyName(){
-        let result = await employeeapi.GetListCompanyName();
 
-        if(result.status === 200)
-        {
-            console.log('Company - create.js Debugger');
+    async submitHandler() {
+        if (this.handleValidation()) {
+            // console.log(this.state.formdata);
+
+            let result = await employee.updateEmployee(this.props.Employee);
+
+            // Purpose Test
+            // let result = {
+            //   status : 200,
+            //    message : "OK"
+            // }
+
+            if (result.status === 200) {
+                console.log('Employee - Edit.js Debugger');
+                console.log(result.message);
+                document.getElementById("hidePopUpBtn").click();
+                this.props.modalStatus(1, 'Success', this.props.Employee.employee_number);
+            }
+            else {
+                console.log('Employee - Edit.js Debugger');
+                console.log(result.message);
+                document.getElementById("hidePopUpBtn").click();
+                this.props.modalStatus(0, 'Failed', this.props.Employee.employee_number);
+            }
+
+            // this.autoGenSupplier();
+        }
+    }
+
+    // async autoGenSupplier() {
+    //     let result = await AutoGen.createCodeSupplier();
+    //     console.log("autoGenSupplier");
+    //     console.log(result);
+    //     this.setState({
+    //         formdata: {
+    //             Code: result
+    //         }
+    //     });
+    // }
+
+    async getCompanyName() {
+        let result = await employee.GetListCompanyName();
+
+        if (result.status === 200) {
+            console.log('Supplier - create.js Debugger');
             console.log("getCompanyName");
             console.log(result);
             console.log(result.message);
-
+            console.log("apambuh 2");
             this.setState({
-                CompanyNameList: result.message
+                getCompanyTitleList: result.message
             });
         }
-        else
-        {
+        else {
             console.log(result.message);
+          
         }
     }
 
-    componentDidMount(){
-        var id = localStorage.getItem('id');
-        this.getDetailEmployeeByID(id);
-        console.log("cek detail employeee dulu vrohhh");
-        console.log(this.getDetailEmployeeByID(id));
-        // this.getAllProductBySupplierID(id);
+    componentDidMount() {
+        // this.autoGenSupplier();
         this.getCompanyName();
+        // this.getDetailEmployeeByID('id');
+        console.log(this.getCompanyName());
     }
 
-    render(){
-        return (
-            <div className="content-wrapper">
-                <section className="content-header">
-                    <h1>
-                        Employee
-                        <small>Edit Employee</small>
-                    </h1>
-                    <ol className="breadcrumb">
-                        <li><a href="#"><i className="fa fa-dashboard"></i> App</a></li>
-                        <li><a href="#">Employee</a></li>
-                        <li className="active">Edit</li>
-                    </ol>
-                </section>
+    componentWillReceiveProps(newProps) {
+        console.log(newProps);
+        this.setState({
+            formdata : newProps.Employee
+        });
+    }
 
-                <section className="content">
-                    <div className="row">
-                        <div className="col-xs-12">
-                            <div className="box box-primary">
-                                <div className="box-header with-border">
-                                    <h3 className="box-title">Edit Employee - {this.state.formdata.employee_number}</h3>
+
+    render() {
+        return (
+            <div className="modal-content">
+                <div className="modal-header">
+                    <button id="hidePopUpBtn" onClick={this.resetForm} type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 className="modal-title">Edit Employee -</h4>
+                </div>
+                <form>
+                    <div className="modal-body">
+                        <div className="box-body">
+                            <div className="col-xs-6">
+                                <div className="form-group">
+                                    <label>Employee ID Number </label>
+                                    <input type="text" className="form-control" placeholder="Employee Number ID"
+                                        id="employee_number" name="employee_number" value={this.props.Employee.employee_number} onChange={this.textChanged} required />
                                 </div>
-                                <form>
-                                    <div className="box-body">
-                                        <div className="col-xs-6">
-                                            <div className="form-group">
-                                                <label>Supplier Code</label>
-                                                <input ref="Code" type="hidden" className="form-control" id="Code" name="Code" value={this.state.formdata.Code} onChange={this.textChanged}/>
-                                                <input type="text" className="form-control" placeholder="Supplier Code" value={this.state.formdata.Code} disabled/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Company Name</label>
-                                                <input ref="CompanyName" type="text" className="form-control" id="CompanyName" name="CompanyName" 
-                                                value={this.state.formdata.CompanyName} onChange={this.textHandler} placeholder="Enter Company Name"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Contact Title Name</label>
-                                                <select style= {{ marginTop : '10px'}} ref="ContactNameTitleId" className="form-control" id="ContactNameTitleId" name="ContactNameTitleId" value={ this.state.formdata.ContactNameTitleId } onChange={ this.textChanged }>
-                                                    <option value="">Select Contact Title Name</option>
-                                                    {
-                                                        this.state.CompanyNameList.map((elemen) =>
-                                                            <option key={ elemen._id } value={ elemen._id }> { elemen.Name } </option>
-                                                        )
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Contact Name</label>
-                                                <input type="text" ref="ContactName" className="form-control" id="ContactName" name="ContactName" 
-                                                value={this.state.formdata.ContactName} onChange={this.textHandler} placeholder="Enter Contact Name"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Contact Email</label>
-                                                <input type="text" ref="ContactEmail" className="form-control" id="ContactEmail" name="ContactEmail" 
-                                                value={this.state.formdata.ContactEmail} onChange={this.textHandler} placeholder="Enter Contact Email"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Contact Title</label>
-                                                <input type="text" ref="ContactTitle" className="form-control" id="ContactTitle" name="ContactTitle" 
-                                                value={this.state.formdata.ContactTitle} onChange={this.textHandler} placeholder="Enter Contact Title"/>
-                                            </div>
-                                        </div>
-                                        <div className="col-xs-6">
-                                            <div className="form-group">
-                                                <label>Address</label>
-                                                <input type="text" ref="Address" className="form-control" id="Address" name="Address" 
-                                                value={this.state.formdata.Address} onChange={this.textHandler} placeholder="Enter Address"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>City</label>
-                                                <input type="text" ref="City" className="form-control" id="City" name="City" 
-                                                value={this.state.formdata.City} onChange={this.textHandler} placeholder="Enter City"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Postal Code</label>
-                                                <input type="text" ref="PostalCode" className="form-control" id="PostalCode" name="PostalCode" 
-                                                value={this.state.formdata.PostalCode} onChange={this.textHandler} placeholder="Enter Postal Code"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Country</label>
-                                                <input type="text" ref="Country" className="form-control" id="Country" name="Country" 
-                                                value={this.state.formdata.Country} onChange={this.textHandler} placeholder="Enter Country"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Phone No</label>
-                                                <input type="text" ref="Phone" className="form-control" id="Phone" name="Phone" 
-                                                value={this.state.formdata.Phone} onChange={this.textHandler} placeholder="Enter Phone No"/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Fax No</label>
-                                                <input type="text" ref="Fax" className="form-control" id="Fax" name="Fax" 
-                                                value={this.state.formdata.Fax} onChange={this.textHandler} placeholder="Enter Fax"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="box-footer">
-                                        <button type="submit" className="btn btn-primary">Submit</button>
-                                    </div>
-                                </form>
+                                <div className="form-group">
+                                    <label>First Name</label>
+                                    <input ref="first_name" type="text" className="form-control" placeholder="First Name"
+                                        id="first_name" name="first_name" value={this.props.Employee.first_name} onChange={this.textChanged} required />
+                                    <span className="help-block" style={{ color: "red" }}>{this.state.errors.first_name}</span>
+                                </div>
+                                <div className="form-group">
+                                    <label>Last Name</label>
+                                    <input ref="last_name" type="text" className="form-control" placeholder="Last Name"
+                                        id="last_name" name="last_name" value={this.props.Employee.last_name} onChange={this.textChanged} required />
+                                    <span className="help-block" style={{ color: "red" }}>{this.state.errors.last_name}</span>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-xs-12">
-                            <div className="box box-primary">
-                                <div className="box-header with-border">
-                                <h3 className="box-title">List Product</h3>
-                                    <div className="box-tools">
-                                        <div className="input-group input-group-sm">
-                                            <div className="input-group-btn">
-                                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#modal-create" style={{float : 'right'}}><i className="fa fa-plus"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div className="col-xs-6">
+                                <div className="form-group">
+                                    <label>Company Name</label>
+                                    <select style={{ marginTop: '10px' }} ref="m_company_id" className="form-control" id="m_company_id" name="m_company_id" value={this.state.formdata.getCompanyTitleList} onChange={this.textChanged}>
+                                        <option value="">{this.props.Employee.company_name}</option>
+                                        {
+                                            this.state.getCompanyTitleList.map((elemen) => //kalo pake props, state nya di ganti apa ????
+                                                <option key={elemen._id} value={elemen._id}> {elemen.nama} </option>
+                                            )
+                                        }
+                                    </select>
                                 </div>
-                                <div className="box-body table-responsive no-padding">
-                                    <table className="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Product Name</th>
-                                                <th>Supplier Name</th>
-                                                <th>Category Name</th>
-                                                <th>Quantity Per Unit</th>
-                                                <th>Unit Price</th>
-                                                <th>Unit In Stock</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            { 
-                                                this.state.product.map((ele,x)=>
-                                                    <tr key={ele._id}>
-                                                        <td>{x+1}</td>
-                                                        <td>{ele.ProductName}</td>
-                                                        <td>{ele.SupplierName}</td>
-                                                        <td>{ele.CategoryName}</td>
-                                                        <td>{ele.QuantityPerUnit}</td>
-                                                        <td>{ele.UnitPrice}</td>
-                                                        <td>{ele.UnitInStock}</td>
-                                                        <td>
-                                                            <button type="button" className="btn btn-info"  data-toggle="modal" data-target="#modal-view" style={{marginRight : '5px'}}><i className="fa fa-search"></i></button>
-                                                            <button type="button" className="btn btn-success" onClick = {() => {this.editHandler(ele._id)}} style={{marginRight : '5px'}}><i className="fa fa-edit"></i></button>
-                                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modal-delete"><i className="fa fa-trash"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="box-footer">
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input ref="email" type="text" className="form-control" placeholder="Email"
+                                        id="email" name="email" value={this.props.Employee.email} onChange={this.textChanged} required />
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-default pull-left" data-dismiss="modal" onClick={this.resetForm}>Close</button>
+                        <button type="button" className="btn btn-primary" onClick={this.submitHandler}>Save</button>
+                    </div>
+                </form>
             </div>
         )
-    };
-};
-
-export default edit;
+    }
+}
+export default EditEmployee
