@@ -5,12 +5,9 @@ import Dashboard from './home/dashboard';
 import Employee from './employee/index';
 import Souvenir from './souvenir/index';
 import EditEmployee from './employee/edit';
-<<<<<<< HEAD
 // import EditSouvenir from './souvenir/edit';
-=======
-import User from './m_user/index';
-import EditUser from './m_user/edit';
->>>>>>> origin/arie
+// import User from './m_user/index';
+// import EditUser from './m_user/edit';
 import appconfig from '../config/app.config.json';
 import tokenExpired from '../common/checkTokenExpired';
 
@@ -20,14 +17,11 @@ const Switcher = () => {
             <PrivateRoute path = "/dashboard" component = { Dashboard } />
             <PrivateRoute path = "/employee/list" component = { Employee } />
             <PrivateRoute path = "/employee/edit" component = { EditEmployee } />
-<<<<<<< HEAD
             <PrivateRoute path = "/souvenir/list" component = { Souvenir } />
             {/* <PrivateRoute path = "/souvenir/edit" component = { EditSouvenir } /> */}
         
-=======
-            <PrivateRoute path = "/m_user/list" component = { User } />
-            <PrivateRoute path = "/m_user/edit" component = { EditUser} />
->>>>>>> origin/arie
+            {/* <PrivateRoute path = "/m_user/list" component = { User } /> */}
+            {/* <PrivateRoute path = "/m_user/edit" component = { EditUser} /> */}
         </Switch>
     )
 }

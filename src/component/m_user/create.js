@@ -142,7 +142,7 @@ class CreateUser extends Component {
         if (this.handleValidation()) {
             console.log(this.state.formdata);
 
-            let result = await employee.InsertNewEmployee(this.state.formdata);
+            let result = await user.InsertNewEmployee(this.state.formdata);
 
             // Purpose Test
             // let result = {
@@ -179,7 +179,7 @@ class CreateUser extends Component {
     // }
 
     async getCompanyName() {
-        let result = await employee.GetListCompanyName();
+        let result = await user.GetListCompanyName();
 
         if (result.status === 200) {
             console.log('Supplier - create.js Debugger');
@@ -308,4 +308,4 @@ class CreateUser extends Component {
         )
     }
 }
-export default CreateEmployee
+export default CreateUser
