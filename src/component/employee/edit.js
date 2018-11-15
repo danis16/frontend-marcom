@@ -220,7 +220,7 @@ class EditEmployee extends Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log(newProps);
+        console.log("new props : " + newProps);
         this.setState({
             formdata : newProps.Employee
         });
@@ -261,8 +261,8 @@ class EditEmployee extends Component {
                             <div className="col-xs-6">
                                 <div className="form-group">
                                     <label>Company Name</label>
-                                    <select style={{ marginTop: '10px' }} ref="m_company_id" className="form-control" id="m_company_id" name="m_company_id" value={this.state.formdata.getCompanyTitleList} onChange={this.textChanged}>
-                                        <option value="">{this.props.Employee.company_name}</option>
+                                    <select style={{ marginTop: '10px' }} ref="m_company_id" className="form-control" id="m_company_id" name="m_company_id" value={this.state.formdata.m_company_id} onChange={this.textChanged}>
+                                        <option value={this.state.formdata._id}>{this.props.Employee.company_name}</option>
                                         {
                                             this.state.getCompanyTitleList.map((elemen) => //kalo pake props, state nya di ganti apa ????
                                                 <option key={elemen._id} value={elemen._id}> {elemen.nama} </option>
@@ -280,7 +280,7 @@ class EditEmployee extends Component {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-default pull-left" data-dismiss="modal" onClick={this.resetForm}>Close</button>
-                        <button type="button" className="btn btn-primary" onClick={this.submitHandler}>Save</button>
+                        <button type="button" className="btn btn-primary"  data-dismiss="modal" onClick={this.submitHandler}>Save</button>
                     </div>
                 </form>
             </div>

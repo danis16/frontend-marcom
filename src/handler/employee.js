@@ -9,7 +9,7 @@ const employee = {
       url: appconfig.base_url + appconfig.endpoints.employee,
       method: "GET",
       headers: {
-        suproapptoken: token,
+        // suproapptoken: token,
         "Content-Type": "application/json"
       }
     };
@@ -63,16 +63,16 @@ const employee = {
     let token = localStorage.getItem(appconfig.secure_key.token);
 
     let option = {
-      url: appconfig.base_url + appconfig.endpoints.supplier + id,
+      url: appconfig.base_url + appconfig.endpoints.employee + id,
       method: "GET",
       headers: {
-        suproapptoken: token,
+        // suproapptoken: token,
         "Content-Type": "application/json"
       }
     };
 
     console.log("Supplier Get Detail : Axios User");
-    console.log(appconfig.base_url + appconfig.endpoints.supplier + id);
+    console.log(appconfig.base_url + appconfig.endpoints.employee + id);
     console.log(token);
 
     try {
@@ -161,7 +161,7 @@ const employee = {
       url: appconfig.base_url + appconfig.endpoints.employee + formdata._id,
       method: "PUT",
       headers: {
-        suproapptoken: token,
+        // suproapptoken: token,
         "Content-Type": "application/json"
       },
       data: {
@@ -186,6 +186,29 @@ const employee = {
     // };
 
     console.log("Employee Update Exiting Employee : Axios User");
+
+    try {
+      let result = await axios(option);
+      console.log(result);
+      return result.data;
+    } catch (error) {
+      return error.response.data;
+    }
+  },
+
+  deleteExistingEmployee: async _id => {
+    let token = localStorage.getItem(appconfig.secure_key.token);
+
+    let option = {
+      url: appconfig.base_url + appconfig.endpoints.employee + _id,
+      method: "DELETE",
+      headers: {
+        // authorization: token,
+        "Content-Type": "application/json"
+      }
+    };
+
+    // console.log("Client Delete Exiting Client : Axios User");
 
     try {
       let result = await axios(option);
