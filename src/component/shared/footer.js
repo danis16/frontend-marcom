@@ -8,7 +8,11 @@ export default class footer extends Component {
                 <div className="pull-right hidden-xs">
                     <b>Version</b> 2.4.0
                 </div>
+<<<<<<< HEAD
                 <strong>Copyright &copy; 2018 Bootcamp Node.js 175 GO SEMANGAT GO.</strong> All rights
+=======
+                <strong>Copyright &copy; 2018 Bootcamp Node.js 175.</strong> All rights
+>>>>>>> origin/arie
                 reserved.
             </footer>
         )

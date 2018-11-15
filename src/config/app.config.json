@@ -3,7 +3,11 @@
     "endpoints" : {
         "login" : "/api/user/login",
         "employee" : "/api/employee/",
+<<<<<<< HEAD
         "souvenir" : "/api/souvenir/"
+=======
+        "m_user" : "/api/m_user/"
+>>>>>>> origin/arie
         
     },
     "secure_key" : {
