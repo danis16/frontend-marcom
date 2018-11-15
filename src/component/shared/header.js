@@ -38,8 +38,8 @@ export default class header extends Component {
         return (
             <header className="main-header">
                 <a href="#" className="logo">
-                    <span className="logo-mini"><b>S</b>PA</span>
-                    <span className="logo-lg">Supro<b>APP</b></span>
+                    <span className="logo-mini"><b>MAR</b>COM</span>
+                    <span className="logo-lg">MAR<b>COM</b></span>
                 </a>
                 <nav className="navbar navbar-static-top">
                     <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button">
