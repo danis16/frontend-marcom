@@ -7,6 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import CreateSouvenir from './create';
 import EditSouvenir from './edit';
 import DetailSouvenir from './detail';
+import DeleteSouvenir from './delete';
 // import DetailSouvenir from './detail';
 import { AlertList } from "react-bs-notifier";
 import axios from "axios";
@@ -26,7 +27,8 @@ class index extends Component {
                 code : '',
                 name : '',
                 m_unit_id : '',
-                description : ''
+                description : '',
+                created_by: ''
                 
             },
             created_date: '',
@@ -58,11 +60,11 @@ class index extends Component {
     	}
     }
 
-    detailModalHandler(idSouvenir) {
+    detailModalHandler(souvenirid) {
         let tmp = {};
 
         this.state.souvenir.map((ele) => {
-            if (idSouvenir === ele._id) {
+            if (souvenirid === ele._id) {
                 tmp = ele;
             }
         });
@@ -304,133 +306,247 @@ class index extends Component {
     // }
 
     render() {
-
         let souvenir_data = this.state.souvenir;
-
+    
         return (
-            <div className="content-wrapper">
-                <section className="content-header">
-                    <h1>
-                        Souvenir
-                        <small>list souvenir</small>
-                    </h1>
-                    <ol className="breadcrumb">
-                        <li><a href="#"><i className="fa fa-dashboard"></i> App</a></li>
-                        <li><a href="#">Souvenir</a></li>
-                        <li className="active">List</li>
-                    </ol>
-                </section>
-
-                {
-                    (this.state.alertData.status === 1) ? <AlertList alerts={this.state.alerts} timeout={250} onDismiss={this.onAlertDismissed.bind(this)} /> : ''
-                }
-                {
-                    (this.state.alertData.status === 0) ? <AlertList alerts={this.state.alerts} timeout={250} onDismiss={this.onAlertDismissed.bind(this)} /> : ''
-                }
-
-                <section className="content">
-                    <div className="row">
-                        <div className="col-xs-12">
-                            <div className="box">
-                                <div className="box-header">
-                                    <h3 className="box-title">List All Souvenir
-                                    </h3>
-                                    <div className="box-tools">
-                                        <div className="input-group input-group-sm">
-                                            <div className="input-group-btn">
-                                                <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#modal-create" style={{ float: 'right' }}>Add</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <form>
-                                    <div className="box-header">
-                                        <div className="row">
-                                            <div className="col-md-3">
-                                                <input type="text" className="form-control" id="companyName" name="companyName" value={this.state.formdata.companyName} onChange={this.textHandler} placeholder="Company Name" />
-                                            </div>
-                                            <div className="col-md-3">
-                                                <input type="text" className="form-control" id="contactName" name="contactName" value={this.state.formdata.contactName} onChange={this.textHandler} placeholder="Contact Name" />
-                                            </div>
-                                            <div className="col-md-2">
-                                                <div className="input-group date">
-                                                    <DatePicker
-                                                        selected={this.state.createdDate}
-                                                        onChange={this.handleChangeDate}
-                                                        className="form-control pull-right"
-                                                        fixedHeight
-                                                        dateFormat="DD/MM/YYYY"
-                                                        id="datepicker"
-                                                        name="datepicker"
-                                                        showMonthDropdown
-                                                        showYearDropdown
-                                                        placeholderText="Created Date"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <input type="text" className="form-control" id="createdBy" name="createdBy" value={this.state.formdata.createdBy} onChange={this.textHandler} placeholder="Created By" />
-                                            </div>
-                                            <div className="col-md-1">
-                                                <div className="input-group-btn">
-                                                    <button type="button" className="btn btn-warning" onClick={this.searchSupplier} style={{ float: 'right' }}>Search</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                                <div className="box-body table-responsive no-padding">
-                                    <table className="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Souvenir Code</th>
-                                                <th>Souvenir Name</th>
-                                                <th>Unit Name</th>
-                                                <th>Description</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                souvenir_data.map((ele, x) =>
-                                                    <tr key={ele._id}>
-                                                        <td>{x + 1}</td>
-                                                        <td>{ele.code}</td>
-                                                        <td>{ele.name}</td>
-                                                        <td>{ele.m_unit_id}</td>
-                                                        <td>{ele.description}</td>
-                                                        <td>
-                                                            <button type="button" className="btn btn-info" onClick={() => { this.detailModalHandler(ele._id) }} data-toggle="modal" data-target="#modal-view" style={{ marginRight: '5px' }}><i className="fa fa-search"></i></button>
-                                                            <button type="button" className="btn btn-success" onClick = {() => {this.editHandler(ele._id)}} style={{marginRight : '5px'}}><i className="fa fa-edit"></i></button>
-                                                            <button type="button" className="btn btn-danger" data-toggle="modal" data-target="#modal-delete"><i className="fa fa-trash"></i></button>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+          <div className="content-wrapper">
+            <section className="content-header">
+              <h1>
+                Souvenir
+                <small>list souvenir</small>
+              </h1>
+              <ol className="breadcrumb">
+                <li>
+                  <a href="#">
+                    <i className="fa fa-dashboard" /> App
+                  </a>
+                </li>
+                <li>
+                  <a href="#">Souvenir</a>
+                </li>
+                <li className="active">List</li>
+              </ol>
+            </section>
+    
+            {this.state.alertData.status === 1 ? (
+              <AlertList
+                alerts={this.state.alerts}
+                timeout={250}
+                onDismiss={this.onAlertDismissed.bind(this)}
+              />
+            ) : (
+              ""
+            )}
+            {this.state.alertData.status === 0 ? (
+              <AlertList
+                alerts={this.state.alerts}
+                timeout={250}
+                onDismiss={this.onAlertDismissed.bind(this)}
+              />
+            ) : (
+              ""
+            )}
+    
+            <section className="content">
+              <div className="row">
+                <div className="col-xs-12">
+                  <div className="box">
+                    <div className="box-header">
+                      <h3 className="box-title">List All Employee</h3>
+                      <div className="box-tools">
+                        <div className="input-group input-group-sm">
+                          <div className="input-group-btn">
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              data-toggle="modal"
+                              data-target="#modal-create"
+                              style={{ float: "right" }}
+                            >
+                              Add
+                            </button>
+                          </div>
                         </div>
+                      </div>
                     </div>
-                </section>
-                <div className="modal fade" id="modal-create">
-                    <div className="modal-dialog">
-                        <CreateSouvenir
-                                modalStatus = {this.modalStatus}
+                    <form>
+                      <div className="box-header">
+                        <div className="row">
+                          <div className="col-md-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="unitName"
+                              name="unitName"
+                              value={this.state.formdata.unitName}
+                              onChange={this.textHandler}
+                              placeholder="Unit Name"
                             />
+                          </div>
+                          <div className="col-md-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="contactName"
+                              name="contactName"
+                              value={this.state.formdata.contactName}
+                              onChange={this.textHandler}
+                              placeholder="Contact Name"
+                            />
+                          </div>
+                          <div className="col-md-2">
+                            <div className="input-group date">
+                              <DatePicker
+                                selected={this.state.createdDate}
+                                onChange={this.handleChangeDate}
+                                className="form-control pull-right"
+                                fixedHeight
+                                dateFormat="DD/MM/YYYY"
+                                id="datepicker"
+                                name="datepicker"
+                                showMonthDropdown
+                                showYearDropdown
+                                placeholderText="Created Date"
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-3">
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="createdBy"
+                              name="createdBy"
+                              value={this.state.formdata.createdBy}
+                              onChange={this.textHandler}
+                              placeholder="Created By"
+                            />
+                          </div>
+                          <div className="col-md-1">
+                            <div className="input-group-btn">
+                              <button
+                                type="button"
+                                className="btn btn-warning"
+                                onClick={this.searchSupplier}
+                                style={{ float: "right" }}
+                              >
+                                Search
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div className="box-body table-responsive no-padding">
+                      <table className="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Souvenir Code</th>
+                            <th>Souvenir Name</th>
+                            <th>Unit Name</th>
+                            <th>Created Date</th>
+                            <th>Created By</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {souvenir_data.map((ele, x) => (
+                            <tr key={ele._id}>
+                              <td>{x + 1}</td>
+                              <td>{ele.code}</td>
+                              <td>{ele.name}</td>
+                              <td>{ele.m_unit_id}</td>
+                              <td>{ele.created_date}</td>
+                              <td>{ele.created_by}</td>
+                              <td>
+                                {/* <button type="button" className="btn btn-success" data-toggle="modal" data-target="#modal-create" style={{ float: 'right', marginRight: '5px' }}><i className="fa fa-edit"></i></button> */}
+                                <button
+                                  type="button"
+                                  className="btn btn-info"
+                                  onClick={() => {
+                                    this.detailModalHandler(ele._id);
+                                  }}
+                                  data-toggle="modal"
+                                  data-target="#modal-view"
+                                  style={{ marginRight: "5px" }}
+                                >
+                                  <i className="fa fa-search" />
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-success"
+                                  onClick={() => {
+                                    this.detailModalHandler(ele._id);
+                                  }}
+                                  data-toggle="modal"
+                                  data-target="#modal-edit"
+                                  style={{ marginRight: "5px" }}
+                                >
+                                  <i className="fa fa-edit" />
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-danger"
+                                  onClick={() => {
+                                    this.detailModalHandler(ele._id);
+                                  }}
+                                  data-toggle="modal"
+                                  data-target="#modal-delete"
+                                  style={{ marginRight: "5px" }}
+                                >
+                                  <i className="fa fa-trash" />
+                                </button>
+                                {/* <button type="button" className="btn btn-success" onClick = {() => {this.editHandler(ele._id)}} style={{marginRight : '5px'}}><i className="fa fa-edit"></i></button> */}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
+                  </div>
                 </div>
-                <div className="modal fade" id="modal-view">
-                    <div className="modal-dialog">
-                        <DetailSouvenir
-                            Souvenir={this.state.currentSouvenir}
-                        />
-                    </div>
-                </div>
+              </div>
+            </section>
+            <div className="modal fade" id="modal-create">
+              <div className="modal-dialog">
+                <CreateSouvenir
+                 modalStatus={this.modalStatus} />
+              </div>
             </div>
-        )
+    
+            <div className="modal fade" id="modal-edit">
+              <div className="modal-dialog">
+                <EditSouvenir
+                  souvenir={this.state.currentSouvenir}
+                  modalStatus={this.modalStatus}
+                />
+              </div>
+            </div>
+    
+            <div className="modal fade" id="modal-view">
+              <div className="modal-dialog">
+                <DetailSouvenir
+                Souvenir={this.state.currentSouvenir} />
+              </div>
+            </div>
+    
+            {/* <div className="modal fade" id="modal-delete">
+              <div className="modal-dialog">
+                <DetailEmployee Employee={this.state.currentEmployee} />
+              </div>
+            </div> */}
+    
+            <div className="modal fade" id="modal-delete">
+              <div className="modal-dialog">
+                <DeleteSouvenir
+                  souvenir={this.state.currentSouvenir}
+                  modalStatus={this.modalStatus}
+                />
+              </div>
+            </div>
+    
+          </div>
+        );
+      }
     }
-};
 
-export default index
+    export default index;

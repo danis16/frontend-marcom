@@ -35,8 +35,7 @@ class DetailEmployee extends Component{
                                 <div className="form-group">
                                     <label>Email</label>
                                     <input ref="Email" type="text" className="form-control" placeholder="Email" value={this.props.Employee.email} disabled/>
-                                </div>
-                                
+                                </div> 
                             </div>
                         </div>
                     </div>

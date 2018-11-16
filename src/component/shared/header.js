@@ -39,7 +39,7 @@ export default class header extends Component {
             <header className="main-header">
                 <a href="#" className="logo">
                     <span className="logo-mini"><b>S</b>PA</span>
-                    <span className="logo-lg">Supro<b>APP</b></span>
+                    <span className="logo-lg">MARCOM<b>175</b></span>
                 </a>
                 <nav className="navbar navbar-static-top">
                     <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button">
