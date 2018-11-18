@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // import supplierapi from '../../handler/supplier';
 import employeeapi from "../../handler/employee";
 import DatePicker from "react-datepicker";
-// import moment from 'moment';
+import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 
 import CreateEmployee from "./create";
@@ -24,7 +24,8 @@ class index extends Component {
         employee_number: "",
         first_name: "",
         last_name: "",
-        created_by: ""
+        created_by: "",
+        company_name: ""
         // created_date : ''
       },
       created_date: "",
@@ -32,17 +33,19 @@ class index extends Component {
         status: 99,
         message: ""
       },
-      alerts: []
+      alerts: [],
+      getCompanyTitleList: []
     };
 
     this.getAllEmployee = this.getAllEmployee.bind(this);
     this.editHandler = this.editHandler.bind(this);
     // this.handleChangeDate = this.handleChangeDate.bind(this);
-    // this.textHandler = this.textHandler.bind(this);
-    // this.searchSupplier = this.searchSupplier.bind(this);
+    this.textHandler = this.textHandler.bind(this);
+    this.searchEmployee = this.searchEmployee.bind(this);
     this.modalStatus = this.modalStatus.bind(this);
     this.onAlertDismissed = this.onAlertDismissed.bind(this);
     this.detailModalHandler = this.detailModalHandler.bind(this);
+    this.getCompanyName = this.getCompanyName.bind(this);
   }
 
   onAlertDismissed(alert) {
@@ -87,13 +90,13 @@ class index extends Component {
   //     });
   // }
 
-  // textHandler(e) {
-  //     let tmp = this.state.formdata;
-  //     tmp[e.target.name] = e.target.value;
-  //     this.setState({
-  //         formdata: tmp
-  //     });
-  // }
+  textHandler(e) {
+    let tmp = this.state.formdata;
+    tmp[e.target.name] = e.target.value;
+    this.setState({
+      formdata: tmp
+    });
+  }
 
   modalStatus(status, message, code) {
     this.getAllEmployee();
@@ -171,82 +174,107 @@ class index extends Component {
     console.log(this.state.alertData.message);
   }
 
-  // async searchSupplier() {
-  //     var query = [];
-  //     var obj = {};
+  async searchEmployee() {
+    var query = [];
+    var obj = {};
 
-  //     console.log("search" + this.state.formdata);
-  //     console.log(this.state.formdata.companyName);
-  //     console.log(this.state.formdata.contactName);
-  //     console.log(this.state.formdata.createdBy);
-  //     console.log(this.state.createdDate._d);
+    console.log("search" + this.state.formdata);
+    console.log(this.state.formdata.company_name);
+    console.log(this.state.formdata.employee_number);
+    console.log(this.state.formdata.employee_name);
+    console.log(this.state.formdata.createdBy);
+    // console.log(this.state.createdDate._d);
 
-  //     let CompanyName = this.state.formdata.companyName;
-  //     let ContactName = this.state.formdata.contactName;
-  //     let CreatedBy = this.state.formdata.createdBy;
-  //     let CreatedDate = moment(this.state.createdDate._d).format("YYYY-MM-DD");
+    let company_name = this.state.formdata.company_name;
+    let employee_number = this.state.formdata.employee_number;
+    let employee_name = this.state.formdata.employee_name;
+    let CreatedBy = this.state.formdata.createdBy;
+    // let CreatedDate = moment(this.state.createdDate._id).format("YYYY-MM-DD");
 
-  //     query.push({
-  //         "id" : "IsDelete",
-  //         "value" : false
-  //     });
+    query.push({
+      id: "is_delete",
+      value: false
+    });
 
-  //     if(this.state.formdata.companyName === '' || this.state.formdata.companyName === null || typeof this.state.formdata.companyName === undefined || this.state.formdata.companyName === undefined){
-  //     }
-  //     else
-  //     {
-  //         query.push({
-  //             "id" : "CompanyName",
-  //             "value" : CompanyName
-  //         });
-  //     }
+    // if (
+    //   this.state.formdata.companyName === "" ||
+    //   this.state.formdata.companyName === null ||
+    //   typeof this.state.formdata.companyName === undefined ||
+    //   this.state.formdata.companyName === undefined
+    // ) {
+    // } else {
+    //   query.push({
+    //     id: "CompanyName",
+    //     value: company_name
+    //   });
+    // }
 
-  //     if(this.state.formdata.contactName === '' || this.state.formdata.contactName === null || typeof this.state.formdata.contactName === undefined || this.state.formdata.contactName === undefined) {
-  //     }
-  //     else
-  //     {
-  //         query.push({
-  //             "id" : "ContactName",
-  //             "value" : ContactName
-  //         });
-  //     }
+    if (
+      this.state.formdata.employee_number === "" ||
+      this.state.formdata.employee_number === null ||
+      typeof this.state.formdata.employee_number === undefined ||
+      this.state.formdata.employee_number === undefined
+    ) {
+    } else {
+      query.push({
+        id: "employee_number",
+        value: employee_number
+      });
+    }
 
-  //     if(this.state.formdata.createdBy === '' || this.state.formdata.createdBy === null || typeof this.state.formdata.createdBy === undefined || this.state.formdata.createdBy === undefined) {
-  //     }
-  //     else
-  //     {
-  //         query.push({
-  //             "id" : "CreatedBy",
-  //             "value" : CreatedBy
-  //         });
-  //     }
+    
+    if (
+      this.state.formdata.employee_name === "" ||
+      this.state.formdata.employee_name === null ||
+      typeof this.state.formdata.employee_name === undefined ||
+      this.state.formdata.employee_name === undefined
+    ) {
+    } else {
+      query.push({
+        id: "employee_name",
+        value: employee_name
+      });
+    }
 
-  //     if(this.state.createdDate._d === '' || this.state.createdDate._d === null || typeof this.state.createdDate._d === undefined || this.state.createdDate._d === undefined) {
-  //     }
-  //     else
-  //     {
-  //         query.push({
-  //             "id" : "CreatedDate",
-  //             "value" : CreatedDate
-  //         });
-  //     }
+    // if (
+    //   this.state.formdata.createdBy === "" ||
+    //   this.state.formdata.createdBy === null ||
+    //   typeof this.state.formdata.createdBy === undefined ||
+    //   this.state.formdata.createdBy === undefined
+    // ) {
+    // } else {
+    //   query.push({
+    //     id: "CreatedBy",
+    //     value: CreatedBy
+    //   });
+    // }
 
-  //     console.log(query);
-  //     let result = await supplierapi.GetAllSupplierHandlerSearch(query);
+    // if (
+    //   this.state.createdDate._d === "" ||
+    //   this.state.createdDate._d === null ||
+    //   typeof this.state.createdDate._d === undefined ||
+    //   this.state.createdDate._d === undefined
+    // ) {
+    // } else {
+    //   query.push({
+    //     id: "CreatedDate",
+    //     value: CreatedDate
+    //   });
+    // }
 
-  //     if(result.status === 200)
-  //     {
-  //         console.log('Client - Index.js Debugger : GetAllSupplierHandlerSearch');
-  //         console.log(result.message);
-  //         this.setState({
-  //             client: result.message
-  //         });
-  //     }
-  //     else
-  //     {
-  //         console.log(result.message);
-  //     }
-  // }
+    console.log(query);
+    let result = await employeeapi.GetAllEmployeeHandlerSearch(query);
+
+    if (result.status === 200) {
+      console.log("Client - Index.js Debugger : GetAllSupplierHandlerSearch");
+      console.log(result.message);
+      this.setState({
+        employee: result.message
+      });
+    } else {
+      console.log(result.message);
+    }
+  }
 
   async getAllEmployee() {
     let result = await employeeapi.GetAllHandler();
@@ -259,6 +287,24 @@ class index extends Component {
       });
     } else {
       console.log(result.message);
+    }
+  }
+
+  async getCompanyName() {
+    let result = await employeeapi.GetListCompanyName();
+
+    if (result.status === 200) {
+      console.log("Supplier - create.js Debugger");
+      console.log("getCompanyName");
+      console.log(result);
+      console.log(result.message);
+      console.log("apambuh 2");
+      this.setState({
+        getCompanyTitleList: result.message
+      });
+    } else {
+      console.log(result.message);
+      console.log("apambuh");
     }
   }
 
@@ -276,34 +322,35 @@ class index extends Component {
     }
   }
 
-  // async getDetailEmployeeByID(id) {
-  //     let result = await employee.GetDetailByEmployeeIDHandler(id);
-  //     let currEmployee = {};
+  async getDetailEmployeeByID(id) {
+      let result = await employeeapi.GetDetailByEmployeeIDHandler(id);
+      let currEmployee = {};
 
-  //     if(result.status === 200)
-  //     {
-  //         console.log('Employee - Edit.js Debugger');
-  //         console.log(result.message);
+      if(result.status === 200)
+      {
+          console.log('Employee - Edit.js Debugger');
+          console.log(result.message);
 
-  //         result.message.map((ele) => {
-  //             currEmployee = ele;
-  //         });
+          result.message.map((ele) => {
+              currEmployee = ele;
+          });
 
-  //         this.setState({
-  //             formdata: currEmployee
-  //         });
-  //     }
-  //     else
-  //     {
-  //         console.log(result.message);
-  //     }
-  // }
+          this.setState({
+              formdata: currEmployee
+          });
+      }
+      else
+      {
+          console.log(result.message);
+      }
+  }
+ 
 
   componentDidMount() {
     this.getAllEmployee();
+    this.getCompanyName();
     localStorage.removeItem("_id");
-    this.getDetailEmployeeByID("id");
-  }
+    }
 
   render() {
     let employee_data = this.state.employee;
@@ -372,31 +419,60 @@ class index extends Component {
                 <form>
                   <div className="box-header">
                     <div className="row">
-                      <div className="col-md-3">
+                      <div className="col-md-2">
                         <input
                           type="text"
                           className="form-control"
-                          id="companyName"
-                          name="companyName"
-                          value={this.state.formdata.companyName}
+                          id="employee_number"
+                          name="employee_number"
+                          value={this.state.formdata.employee_number}
                           onChange={this.textHandler}
-                          placeholder="Company Name"
-                        />
-                      </div>
-                      <div className="col-md-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="contactName"
-                          name="contactName"
-                          value={this.state.formdata.contactName}
-                          onChange={this.textHandler}
-                          placeholder="Contact Name"
+                          placeholder="Employee ID Number"
                         />
                       </div>
                       <div className="col-md-2">
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="first_name"
+                          name="first_name"
+                          value={this.state.formdata.first_name}
+                          onChange={this.textHandler}
+                          placeholder="Employee Name"
+                        />
+                      </div>
+
+                      <div className="col-md-2">
+                        <select
+                          // style={{ marginTop: "10px" }}
+                          ref="company_name"
+                          className="form-control"
+                          id="company_name"
+                          name="company_name"
+                          value={this.state.formdata.company_name}
+                          onChange={this.textHandler}
+                        >
+                          <option value="">Company Name</option>
+                          {this.state.getCompanyTitleList.map(elemen => (
+                            <option key={elemen.name} value={elemen.name}>
+                              {elemen.nama}
+                            </option>
+                          ))}
+                        </select>
+                        {/* <input
+                          type="text"
+                          className="form-control"
+                          id="first_name"
+                          name="first_name"
+                          value={this.state.formdata.first_name}
+                          onChange={this.textHandler}
+                          placeholder="Select Company Name"
+                        /> */}
+                      </div>
+
+                      <div className="col-md-2">
                         <div className="input-group date">
-                          <DatePicker
+                          {/* <DatePicker
                             selected={this.state.createdDate}
                             onChange={this.handleChangeDate}
                             className="form-control pull-right"
@@ -407,10 +483,10 @@ class index extends Component {
                             showMonthDropdown
                             showYearDropdown
                             placeholderText="Created Date"
-                          />
+                          /> */}
                         </div>
                       </div>
-                      <div className="col-md-3">
+                      <div className="col-md-2">
                         <input
                           type="text"
                           className="form-control"
@@ -420,13 +496,27 @@ class index extends Component {
                           onChange={this.textHandler}
                           placeholder="Created By"
                         />
+                        {/* <div class="form-group">
+                          <label>Date:</label>
+
+                          <div class="input-group date">
+                            <div class="input-group-addon">
+                              <i class="fa fa-calendar" />
+                            </div>
+                            <input
+                              type="text"
+                              class="form-control pull-right"
+                              id="datepicker"
+                            />
+                          </div>
+                        </div> */}
                       </div>
                       <div className="col-md-1">
                         <div className="input-group-btn">
                           <button
                             type="button"
                             className="btn btn-warning"
-                            onClick={this.searchSupplier}
+                            onClick={this.searchEmployee}
                             style={{ float: "right" }}
                           >
                             Search
@@ -543,7 +633,6 @@ class index extends Component {
             />
           </div>
         </div>
-
       </div>
     );
   }
