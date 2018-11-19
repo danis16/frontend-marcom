@@ -17,7 +17,7 @@ class CreateSouvenir extends Component {
                 created_by: "",
                 created_date: "",
                 updated_by: "",
-                updated_date: "",
+                updated_date: ""
                
             },
             getUnitTitleList: [],
@@ -35,17 +35,7 @@ class CreateSouvenir extends Component {
     resetForm() {
         this.setState({
             formdata: {
-                // CompanyName : "",
-                // ContactName : "",
-                // ContactEmail : "",
-                // ContactTitle : "",
-                // Address : "",
-                // City : "",
-                // PostalCode : "",
-                // Country : "",
-                // Phone : "",
-                // Fax : "",
-                // CompanyId: "",
+                
                 code: "",
                 name: "",
                 description: "",
@@ -182,7 +172,7 @@ class CreateSouvenir extends Component {
     componentDidMount() {
         // this.autoGenSupplier();
         this.getUnitName();
-        // console.log(this.getUnitName());
+        console.log(this.getUnitName());
     }
 
     render() {

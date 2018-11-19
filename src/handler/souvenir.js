@@ -124,7 +124,7 @@ const souvenir = {
     },
 
 
-    InsertNewEmployee : async (formdata) => {
+    InsertNewSouvenir : async (formdata) => {
         let token = localStorage.getItem(appconfig.secure_key.token);
 
         let option = {
@@ -165,8 +165,60 @@ const souvenir = {
         {
             return error.response.data;
         }
+    },
+
+    updateSouvenir: async formdata => {
+        let token = localStorage.getItem(appconfig.secure_key.token);
+    
+        let option = {
+          url: appconfig.base_url + appconfig.endpoints.souve + formdata._id,
+          method: "PUT",
+          headers: {
+            // suproapptoken: token,
+            "Content-Type": "application/json"
+          },
+          data: {
+            code : formdata.code,
+            name : formdata.name,
+            m_unit_id : formdata.m_unit_id,
+            description : formdata.description
+        }
+        };
+
+        console.log("Souvenir Update Exiting Souvenir : Axios User");
+
+    try {
+      let result = await axios(option);
+      console.log(result);
+      return result.data;
+    } catch (error) {
+      return error.response.data;
     }
-}
+  },
+
+  deleteExistingSouvenir: async _id => {
+    let token = localStorage.getItem(appconfig.secure_key.token);
+
+    let option = {
+      url: appconfig.base_url + appconfig.endpoints.souvenir + _id,
+      method: "DELETE",
+      headers: {
+        // authorization: token,
+        "Content-Type": "application/json"
+      }
+    };
+
+    // console.log("Client Delete Exiting Client : Axios User");
+
+    try {
+      let result = await axios(option);
+      console.log(result);
+      return result.data;
+    } catch (error) {
+      return error.response.data;
+    }
+  }
+};
 
 export default souvenir;
 

@@ -38,8 +38,13 @@ export default class header extends Component {
         return (
             <header className="main-header">
                 <a href="#" className="logo">
+<<<<<<< HEAD
                     <span className="logo-mini"><b>MAR</b>COM</span>
                     <span className="logo-lg">MAR<b>COM</b></span>
+=======
+                    <span className="logo-mini"><b>S</b>PA</span>
+                    <span className="logo-lg">MARCOM<b>175</b></span>
+>>>>>>> origin/mayang
                 </a>
                 <nav className="navbar navbar-static-top">
                     <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button">

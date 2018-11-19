@@ -8,7 +8,7 @@ class DetailSouvenir extends Component{
                     <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 className="modal-title">Detail Souvenir - {this.props.Souvenir.code}</h4>
+                    <h4 className="modal-title">Detail Souvenir -{this.props.Souvenir.code}</h4>
                 </div>
                 <form>
                     <div className="modal-body">
