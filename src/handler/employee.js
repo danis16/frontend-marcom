@@ -9,7 +9,7 @@ const employee = {
       url: appconfig.base_url + appconfig.endpoints.employee,
       method: "GET",
       headers: {
-        // suproapptoken: token,
+        suproapptoken: token,
         "Content-Type": "application/json"
       }
     };
@@ -27,37 +27,37 @@ const employee = {
     }
   },
 
-  // GetAllSupplierHandlerSearch : async(query) => {
-  //     let token = localStorage.getItem(appconfig.secure_key.token);
+  GetAllEmployeeHandlerSearch : async(query) => {
+      let token = localStorage.getItem(appconfig.secure_key.token);
 
-  //     let option = {
-  //         url: appconfig.base_url + appconfig.endpoints.supplier + 'search',
-  //         method: 'POST',
-  //         headers: {
-  //             'suproapptoken' : token,
-  //             'Content-Type' : 'application/json'
-  //         },
-  //         data: {
-  //             filter: query
-  //         }
-  //     };
+      let option = {
+          url: appconfig.base_url + appconfig.endpoints.employee + 'search',
+          method: 'POST',
+          headers: {
+              'suproapptoken' : token,
+              'Content-Type' : 'application/json'
+          },
+          data: {
+              filter: query
+          }
+      };
 
-  //     console.log('Supplier GetAllSupplierHandlerSearch : Axios User');
-  //     console.log(appconfig.base_url + appconfig.endpoints.supplier + 'search');
-  //     console.log(token);
-  //     console.log(option);
+      console.log('Supplier GetAllSupplierHandlerSearch : Axios User');
+      console.log(appconfig.base_url + appconfig.endpoints.employee + 'search');
+      console.log(token);
+      console.log(option);
 
-  //     try
-  //     {
-  //         let result = await axios(option);
-  //         console.log(result);
-  //         return result.data;
-  //     }
-  //     catch (error)
-  //     {
-  //         return error.response.data;
-  //     }
-  // },
+      try
+      {
+          let result = await axios(option);
+          console.log(result);
+          return result.data;
+      }
+      catch (error)
+      {
+          return error.response.data;
+      }
+  },
 
   GetDetailByEmployeeIDHandler: async id => {
     let token = localStorage.getItem(appconfig.secure_key.token);
@@ -66,8 +66,9 @@ const employee = {
       url: appconfig.base_url + appconfig.endpoints.employee + id,
       method: "GET",
       headers: {
-        // suproapptoken: token,
+        suproapptoken: token,
         "Content-Type": "application/json"
+    
       }
     };
 
